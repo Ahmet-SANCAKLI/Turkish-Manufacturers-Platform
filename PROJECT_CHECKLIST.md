@@ -1,44 +1,70 @@
-
 # PROJECT_CHECKLIST.md
-## Turkey Manufacturers Platform – Full Project Checklist
+## Turkey Manufacturers Platform – MVP Development Checklist
 
-A step‑by‑step checklist to build and launch the MVP of the Turkey Manufacturers Platform.
-Designed for free domain + free hosting setup.
+This checklist provides a complete step-by-step roadmap to build and launch the MVP of the Turkey Manufacturers Platform.
+
+Goal:
+
+Build a B2B sourcing platform where international buyers can discover Turkish manufacturers and send RFQs (Request for Quotation).
+
+Technology stack:
+
+- Next.js
+- TypeScript
+- Tailwind CSS
+- PostgreSQL
+- Supabase
+- Vercel
 
 ---
 
 # 1. Project Initialization
 
-- [ ] Define project idea and scope
+Define the basic project concept.
+
+- [ ] Define the platform idea
 - [ ] Define target users
-  - [ ] Buyers
-  - [ ] Suppliers
-  - [ ] Admin
-- [ ] Define core features
-  - [ ] Supplier directory
-  - [ ] Product catalog
-  - [ ] RFQ system
-  - [ ] Supplier subscription
-  - [ ] Admin panel
+
+Users:
+
+- [ ] Buyers
+- [ ] Suppliers
+- [ ] Admin
+
+Define MVP features:
+
+- [ ] Supplier directory
+- [ ] Product catalog
+- [ ] RFQ system
+- [ ] Supplier onboarding
+- [ ] Admin panel
+- [ ] SEO landing pages
 
 ---
 
-# 2. Domain and Hosting (Free)
+# 2. Domain and Hosting
 
-## Free domain options
+Choose domain and hosting.
 
-- [ ] Register free domain
-  - https://freenom.com
-  - https://eu.org
-  - https://nic.eu.org
+## Domain
+
+Register a domain.
+
+Options:
+
+- https://freenom.com
+- https://eu.org
+- https://nic.eu.org
 
 Example:
 
 turkeymanufacturers.eu.org
 
-## Free hosting
+---
 
-Choose platform:
+## Hosting
+
+Choose hosting platform.
 
 - [ ] Vercel (recommended)
 - [ ] Netlify
@@ -48,6 +74,8 @@ Choose platform:
 
 # 3. GitHub Repository Setup
 
+Create GitHub repository.
+
 - [ ] Create GitHub account
 - [ ] Create repository
 
@@ -55,29 +83,31 @@ Repository name:
 
 turkey-manufacturers-platform
 
-- [ ] Upload documentation
-- [ ] Upload README
-- [ ] Upload docs folder
-- [ ] Upload PROJECT_CHECKLIST.md
+Upload initial files:
 
-Repo structure:
+- [ ] README.md
+- [ ] PROJECT_CHECKLIST.md
+- [ ] docs folder
+
+Example repo structure:
 
 repo/
-README.md
-PROJECT_CHECKLIST.md
+
+README.md  
+PROJECT_CHECKLIST.md  
 docs/
 
 ---
 
 # 4. Development Environment Setup
 
-Install tools:
+Install required development tools.
 
-- [ ] Node.js
-- [ ] VS Code
-- [ ] Git
+- [ ] Install Node.js
+- [ ] Install VS Code
+- [ ] Install Git
 
-VS Code extensions:
+Install useful VS Code extensions:
 
 - [ ] Prettier
 - [ ] ESLint
@@ -88,82 +118,90 @@ VS Code extensions:
 
 # 5. Project Bootstrap (Next.js)
 
-Create project:
+Create the Next.js project.
+
+Run:
 
 npx create-next-app@latest turkey-manufacturers-platform
 
-Options:
+Choose options:
 
 TypeScript → Yes  
 Tailwind → Yes  
 App Router → Yes  
-src folder → Yes  
+src folder → Yes
 
 Run project:
 
 npm run dev
 
-Verify:
+Verify the site:
 
 http://localhost:3000
 
 ---
 
-# 6. Project Folder Architecture
+# 6. Project Folder Structure
 
-Create structure:
+Inside the project create basic folders.
 
 src/
-app/
-components/
-lib/
-db/
-services/
-types/
+
+app/  
+components/  
+lib/  
+db/  
+services/  
+types/  
+utils/
 
 ---
 
-# 7. Database Setup (Supabase Free)
+# 7. Environment Configuration
+
+Create environment variables.
+
+Create file:
+
+.env.local
+
+Add variables:
+
+DATABASE_URL=  
+SUPABASE_URL=  
+SUPABASE_ANON_KEY=  
+SUPABASE_SERVICE_ROLE_KEY=
+
+Ensure `.env.local` is inside `.gitignore`.
+
+---
+
+# 8. Supabase Setup
+
+Create database using Supabase.
+
+Steps:
 
 - [ ] Create account at https://supabase.com
-- [ ] Create project
-- [ ] Create PostgreSQL database
-- [ ] Copy credentials
-
-Create .env.local:
-
-DATABASE_URL=
-SUPABASE_URL=
-SUPABASE_ANON_KEY=
+- [ ] Create new project
+- [ ] Enable PostgreSQL database
+- [ ] Copy API credentials
+- [ ] Add credentials to `.env.local`
 
 ---
 
-# 8. Database Schema
+# 9. Database Schema (MVP)
 
-Create tables:
+Create the main database tables.
 
-- [ ] users
-- [ ] companies
-- [ ] categories
-- [ ] products
-- [ ] product_images
-- [ ] rfqs
-- [ ] subscriptions
-- [ ] payments
-- [ ] supplier_applications
+## users
 
----
+Fields:
 
-# 9. Authentication
-
-Use Supabase Auth
-
-Features:
-
-- [ ] Signup
-- [ ] Login
-- [ ] Session handling
-- [ ] Role system
+- id
+- email
+- role
+- created_at
 
 Roles:
 
@@ -173,24 +211,123 @@ buyer
 
 ---
 
-# 10. Public Website Pages
+## companies
 
-Create pages:
+Fields:
 
-- [ ] Homepage
-- [ ] Category page
-- [ ] Supplier profile page
-- [ ] Product page
-- [ ] Pricing page
-- [ ] Contact page
-- [ ] Supplier application form
-- [ ] RFQ form
+- id
+- name
+- slug
+- description
+- country
+- city
+- website
+- logo_url
+- verified
+- created_at
 
 ---
 
-# 11. Supplier Onboarding
+## categories
 
-Workflow:
+Fields:
+
+- id
+- name
+- slug
+- parent_id
+
+---
+
+## products
+
+Fields:
+
+- id
+- company_id
+- category_id
+- name
+- slug
+- description
+- moq
+- image_url
+- created_at
+
+---
+
+## rfqs
+
+Fields:
+
+- id
+- buyer_name
+- buyer_email
+- company_name
+- country
+- product_id
+- supplier_id
+- message
+- quantity
+- created_at
+
+---
+
+# 10. Slug System
+
+Create SEO friendly URLs.
+
+Tasks:
+
+- [ ] Generate slugs for companies
+- [ ] Generate slugs for products
+- [ ] Generate slugs for categories
+- [ ] Ensure slug uniqueness
+
+Examples:
+
+/suppliers/istanbul-textile-co  
+/products/cotton-tshirt  
+/categories/textile
+
+---
+
+# 11. Image Storage
+
+Configure product image storage.
+
+Options:
+
+- [ ] Supabase Storage
+- [ ] Cloudinary
+
+Tasks:
+
+- [ ] Configure storage
+- [ ] Upload product images
+- [ ] Save image URLs in database
+
+---
+
+# 12. Public Website Pages
+
+Create main public pages.
+
+- [ ] Homepage
+- [ ] Supplier directory
+- [ ] Category page
+- [ ] Supplier profile page
+- [ ] Product page
+- [ ] Contact page
+- [ ] Supplier application page
+- [ ] RFQ submission page
+
+---
+
+# 13. Supplier Onboarding
+
+Create supplier application workflow.
+
+Flow:
 
 Supplier applies  
 ↓  
@@ -198,55 +335,93 @@ Admin reviews
 ↓  
 Admin approves  
 ↓  
-Company created  
+Company profile created
 
 Tasks:
 
 - [ ] Supplier application form
-- [ ] Admin approval page
-- [ ] Company creation flow
+- [ ] Admin approval interface
+- [ ] Create company profile after approval
 
 ---
 
-# 12. Product Catalog
+# 14. Product Catalog
 
-Supplier features:
+Allow suppliers to manage products.
+
+Features:
 
 - [ ] Add product
 - [ ] Edit product
-- [ ] Upload images
+- [ ] Upload product images
 - [ ] Publish product
 
-Fields:
+Product fields:
 
 product name  
 description  
 category  
 MOQ  
-images  
+images
 
 ---
 
-# 13. RFQ System
+# 15. RFQ System
 
-RFQ flow:
+Implement RFQ workflow.
+
+Flow:
 
 Buyer submits RFQ  
 ↓  
 System stores RFQ  
 ↓  
-Suppliers receive RFQ  
+Admin reviews RFQ  
+↓  
+Suppliers notified
 
 Tasks:
 
-- [ ] RFQ form
-- [ ] RFQ database table
-- [ ] RFQ admin view
+- [ ] RFQ submission form
+- [ ] Save RFQ in database
+- [ ] RFQ admin dashboard
 - [ ] Email notifications
 
 ---
 
-# 14. Admin Panel
+# 16. Email Service
+
+Configure email notifications.
+
+Options:
+
+- [ ] Resend
+- [ ] SendGrid
+- [ ] Postmark
+
+Tasks:
+
+- [ ] Setup email service
+- [ ] Send RFQ notification emails
+- [ ] Send supplier approval emails
+
+---
+
+# 17. Search Functionality
+
+Add basic search.
+
+Features:
+
+- [ ] Search suppliers
+- [ ] Search products
+- [ ] Filter by category
+
+---
+
+# 18. Admin Panel
+
+Create admin panel.
 
 Admin features:
 
@@ -254,8 +429,7 @@ Admin features:
 - [ ] Manage companies
 - [ ] Manage products
 - [ ] View RFQs
-- [ ] Manage subscriptions
-- [ ] Manage payments
+- [ ] Manage categories
 
 Admin routes:
 
@@ -263,118 +437,117 @@ Admin routes:
 /admin/companies  
 /admin/products  
 /admin/rfqs  
-/admin/subscriptions  
+/admin/categories
 
 ---
 
-# 15. Subscription System
+# 19. SEO Setup
 
-Plans:
+Create SEO optimized landing pages.
 
-Free  
-Premium  
-Gold  
-
-Features:
-
-Free → limited products  
-Premium → RFQ access  
-Gold → featured listing  
-
----
-
-# 16. Payment Integration (Later)
-
-Options:
-
-- Stripe
-- iyzico
-
-Flow:
-
-Choose plan  
-↓  
-Checkout  
-↓  
-Payment confirmation  
-↓  
-Activate subscription  
-
----
-
-# 17. SEO Setup
-
-Create landing pages:
+Examples:
 
 /turkish-textile-manufacturers  
 /turkish-furniture-suppliers  
 /turkish-food-exporters  
 
+Technical SEO tasks:
+
+- [ ] Dynamic meta tags
+- [ ] Open Graph tags
+- [ ] Structured data
+- [ ] sitemap.xml
+- [ ] robots.txt
+
 Tools:
 
-- Google Search Console
-- Google Analytics
+- [ ] Google Search Console
+- [ ] Google Analytics
 
 ---
 
-# 18. Deployment (Free)
+# 20. Seed Data
 
-Use Vercel
+Add initial marketplace data.
+
+Tasks:
+
+- [ ] Add supplier data
+- [ ] Add product data
+- [ ] Add categories
+
+Recommended minimum:
+
+- 3 categories
+- 30 suppliers
+- 100 products
+
+---
+
+# 21. Deployment
+
+Deploy platform.
 
 Steps:
 
-- [ ] Connect GitHub repo
+- [ ] Connect GitHub repository to Vercel
 - [ ] Import project
 - [ ] Add environment variables
-- [ ] Deploy
+- [ ] Deploy project
 
-Flow:
+Deployment flow:
 
 Git push  
 ↓  
 Vercel build  
 ↓  
-Live website  
+Live website
 
 ---
 
-# 19. Connect Domain
+# 22. Domain Connection
 
-- [ ] Add domain in Vercel
+Connect custom domain.
+
+- [ ] Add domain to Vercel
 - [ ] Configure DNS
 - [ ] Enable HTTPS
 
 ---
 
-# 20. Launch MVP
+# 23. MVP Launch
 
-Minimum version:
+Minimum launch requirements:
 
-- [ ] Homepage
-- [ ] 3 categories
-- [ ] 10 suppliers
-- [ ] 30 products
-- [ ] RFQ form
-- [ ] Admin panel
-- [ ] Pricing page
+- [ ] Homepage ready
+- [ ] 3 categories published
+- [ ] 30 suppliers added
+- [ ] 100 products published
+- [ ] RFQ form working
+- [ ] Admin panel working
+- [ ] SEO landing pages published
 
 ---
 
-# 21. Post Launch
+# 24. Post Launch Tasks
 
-- [ ] Add suppliers
-- [ ] Collect RFQ leads
+After launch:
+
+- [ ] Add more suppliers
 - [ ] Improve SEO
 - [ ] Add blog content
 - [ ] Monitor analytics
+- [ ] Improve UI/UX
 
 ---
 
 # MVP Success Criteria
 
-- [ ] Suppliers visible
-- [ ] Products searchable
-- [ ] RFQ working
-- [ ] Admin panel functional
-- [ ] Website publicly accessible
-# github test
+The platform is successful when:
+
+- [ ] Suppliers are visible
+- [ ] Products are searchable
+- [ ] RFQ system works
+- [ ] Admin panel works
+- [ ] Website is publicly accessible
+- [ ] Real RFQ leads are generated
