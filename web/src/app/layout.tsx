@@ -15,7 +15,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased">
         <div className="bg-amber-100 px-4 py-2 text-center text-sm font-medium text-amber-900 ring-1 ring-amber-200">
-          Bu site yapim asamasindadir.
+          This site is under construction.
         </div>
         {children}
       </body>

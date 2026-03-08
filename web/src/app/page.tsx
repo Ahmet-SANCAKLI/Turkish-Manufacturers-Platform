@@ -48,6 +48,19 @@ export default async function Home() {
         <p className="mt-2 text-zinc-600">
           Turkish manufacturers and products for global buyers.
         </p>
+        <form action="/search" method="get" className="mt-4 flex gap-2">
+          <input
+            name="q"
+            placeholder="Search suppliers or products..."
+            className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm outline-none focus:border-zinc-500"
+          />
+          <button
+            type="submit"
+            className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700"
+          >
+            Search
+          </button>
+        </form>
         <div className="mt-4">
           <div className="flex flex-wrap gap-2">
             <Link
@@ -57,47 +70,48 @@ export default async function Home() {
               Request a Quotation
             </Link>
             <Link
-              href="/admin/rfqs"
-              className="inline-flex rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-900 ring-1 ring-zinc-300 hover:bg-zinc-100"
-            >
-              Open Admin RFQs
-            </Link>
-            <Link
               href="/supplier/apply"
               className="inline-flex rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-900 ring-1 ring-zinc-300 hover:bg-zinc-100"
             >
               Supplier Apply
             </Link>
             <Link
-              href="/admin/suppliers"
-              className="inline-flex rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-900 ring-1 ring-zinc-300 hover:bg-zinc-100"
-            >
-              Open Admin Suppliers
-            </Link>
-            <Link
-              href="/admin/products"
-              className="inline-flex rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-900 ring-1 ring-zinc-300 hover:bg-zinc-100"
-            >
-              Open Admin Products
-            </Link>
-            <Link
-              href="/admin/categories"
-              className="inline-flex rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-900 ring-1 ring-zinc-300 hover:bg-zinc-100"
-            >
-              Open Admin Categories
-            </Link>
-            <Link
               href="/suppliers"
               className="inline-flex rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-900 ring-1 ring-zinc-300 hover:bg-zinc-100"
             >
-              Browse Suppliers
+              Suppliers
             </Link>
             <Link
-              href="/search"
+              href="/products"
               className="inline-flex rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-900 ring-1 ring-zinc-300 hover:bg-zinc-100"
             >
-              Search
+              Products
             </Link>
+            <Link
+              href="/categories"
+              className="inline-flex rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-900 ring-1 ring-zinc-300 hover:bg-zinc-100"
+            >
+              Categories
+            </Link>
+            <details className="relative">
+              <summary className="cursor-pointer list-none rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-900 ring-1 ring-zinc-300 hover:bg-zinc-100">
+                Admin
+              </summary>
+              <div className="absolute z-10 mt-2 w-52 rounded-lg bg-white p-2 ring-1 ring-zinc-200">
+                <Link href="/admin/rfqs" className="block rounded px-2 py-1 text-sm hover:bg-zinc-100">
+                  RFQs
+                </Link>
+                <Link href="/admin/suppliers" className="block rounded px-2 py-1 text-sm hover:bg-zinc-100">
+                  Suppliers
+                </Link>
+                <Link href="/admin/products" className="block rounded px-2 py-1 text-sm hover:bg-zinc-100">
+                  Products
+                </Link>
+                <Link href="/admin/categories" className="block rounded px-2 py-1 text-sm hover:bg-zinc-100">
+                  Categories
+                </Link>
+              </div>
+            </details>
           </div>
         </div>
 
@@ -105,12 +119,13 @@ export default async function Home() {
           <h2 className="text-xl font-semibold">Categories</h2>
           <div className="mt-4 flex flex-wrap gap-2">
             {categories.map((category) => (
-              <span
+              <Link
                 key={category.id}
+                href={`/categories/${category.slug}`}
                 className="rounded-full bg-white px-3 py-1 text-sm ring-1 ring-zinc-200"
               >
                 {category.name}
-              </span>
+              </Link>
             ))}
           </div>
         </section>
