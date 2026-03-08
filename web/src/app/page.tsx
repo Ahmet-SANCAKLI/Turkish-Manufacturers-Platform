@@ -81,6 +81,12 @@ export default async function Home() {
               Open Admin Products
             </Link>
             <Link
+              href="/admin/categories"
+              className="inline-flex rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-900 ring-1 ring-zinc-300 hover:bg-zinc-100"
+            >
+              Open Admin Categories
+            </Link>
+            <Link
               href="/suppliers"
               className="inline-flex rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-900 ring-1 ring-zinc-300 hover:bg-zinc-100"
             >
