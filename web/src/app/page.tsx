@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import { fetchFromSupabase } from "@/lib/supabase-rest";
+import { ADMIN_COOKIE_NAME } from "@/lib/admin-auth";
 
 type Category = {
   id: string;
@@ -31,6 +33,9 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
+  const cookieStore = await cookies();
+  const isAdmin = cookieStore.get(ADMIN_COOKIE_NAME)?.value === "1";
+
   const [categories, companies, products] = await Promise.all([
     fetchFromSupabase<Category[]>("categories?select=id,name,slug&order=name.asc"),
     fetchFromSupabase<Company[]>(
@@ -93,25 +98,35 @@ export default async function Home() {
             >
               Categories
             </Link>
-            <details className="relative">
-              <summary className="cursor-pointer list-none rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-900 ring-1 ring-zinc-300 hover:bg-zinc-100">
-                Admin
-              </summary>
-              <div className="absolute z-10 mt-2 w-52 rounded-lg bg-white p-2 ring-1 ring-zinc-200">
-                <Link href="/admin/rfqs" className="block rounded px-2 py-1 text-sm hover:bg-zinc-100">
-                  RFQs
-                </Link>
-                <Link href="/admin/suppliers" className="block rounded px-2 py-1 text-sm hover:bg-zinc-100">
-                  Suppliers
-                </Link>
-                <Link href="/admin/products" className="block rounded px-2 py-1 text-sm hover:bg-zinc-100">
-                  Products
-                </Link>
-                <Link href="/admin/categories" className="block rounded px-2 py-1 text-sm hover:bg-zinc-100">
-                  Categories
-                </Link>
-              </div>
-            </details>
+            {isAdmin ? (
+              <details className="relative">
+                <summary className="cursor-pointer list-none rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-900 ring-1 ring-zinc-300 hover:bg-zinc-100">
+                  Admin
+                </summary>
+                <div className="absolute z-10 mt-2 w-52 rounded-lg bg-white p-2 ring-1 ring-zinc-200">
+                  <Link href="/admin/rfqs" className="block rounded px-2 py-1 text-sm hover:bg-zinc-100">
+                    RFQs
+                  </Link>
+                  <Link href="/admin/suppliers" className="block rounded px-2 py-1 text-sm hover:bg-zinc-100">
+                    Suppliers
+                  </Link>
+                  <Link href="/admin/products" className="block rounded px-2 py-1 text-sm hover:bg-zinc-100">
+                    Products
+                  </Link>
+                  <Link href="/admin/categories" className="block rounded px-2 py-1 text-sm hover:bg-zinc-100">
+                    Categories
+                  </Link>
+                  <form action="/api/admin/logout" method="post" className="mt-1 border-t border-zinc-200 pt-1">
+                    <button
+                      type="submit"
+                      className="block w-full rounded px-2 py-1 text-left text-sm text-red-700 hover:bg-red-50"
+                    >
+                      Logout
+                    </button>
+                  </form>
+                </div>
+              </details>
+            ) : null}
           </div>
         </div>
 
