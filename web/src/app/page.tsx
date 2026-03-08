@@ -75,10 +75,22 @@ export default async function Home() {
               Open Admin Suppliers
             </Link>
             <Link
+              href="/admin/products"
+              className="inline-flex rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-900 ring-1 ring-zinc-300 hover:bg-zinc-100"
+            >
+              Open Admin Products
+            </Link>
+            <Link
               href="/suppliers"
               className="inline-flex rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-900 ring-1 ring-zinc-300 hover:bg-zinc-100"
             >
               Browse Suppliers
+            </Link>
+            <Link
+              href="/search"
+              className="inline-flex rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-900 ring-1 ring-zinc-300 hover:bg-zinc-100"
+            >
+              Search
             </Link>
           </div>
         </div>
