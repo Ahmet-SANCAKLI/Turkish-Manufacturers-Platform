@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { insertIntoSupabase } from "@/lib/supabase-rest";
+import { sendEmail } from "@/lib/email";
 
 function stringValue(formData: FormData, key: string) {
   return String(formData.get(key) ?? "").trim();
@@ -42,6 +43,27 @@ export async function POST(request: Request) {
       message,
       quantity,
     });
+
+    const notifyAdmin = process.env.NOTIFICATION_EMAIL;
+    if (notifyAdmin) {
+      try {
+        await sendEmail({
+          to: notifyAdmin,
+          subject: "New RFQ submitted",
+          html: `
+            <h2>New RFQ</h2>
+            <p><strong>Buyer:</strong> ${buyerName}</p>
+            <p><strong>Email:</strong> ${buyerEmail}</p>
+            <p><strong>Company:</strong> ${companyName || "-"}</p>
+            <p><strong>Country:</strong> ${country}</p>
+            <p><strong>Quantity:</strong> ${quantity}</p>
+            <p><strong>Message:</strong> ${message}</p>
+          `,
+        });
+      } catch (error) {
+        console.error("RFQ email notification failed", error);
+      }
+    }
 
     return NextResponse.redirect(new URL("/rfq?success=1", request.url));
   } catch {

@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
 import { fetchFromSupabase, insertIntoSupabase, patchSupabase } from "@/lib/supabase-rest";
+import { sendEmail } from "@/lib/email";
 
 type SupplierApplication = {
   id: string;
   company_name: string;
+  contact_name: string;
+  email: string;
   country: string;
   city: string | null;
   website: string | null;
@@ -26,7 +29,7 @@ export async function POST(
   try {
     const { id } = await params;
     const applications = await fetchFromSupabase<SupplierApplication[]>(
-      `supplier_applications?id=eq.${id}&select=id,company_name,country,city,website,description,status&limit=1`,
+      `supplier_applications?id=eq.${id}&select=id,company_name,contact_name,email,country,city,website,description,status&limit=1`,
     );
     const application = applications[0];
 
@@ -64,6 +67,21 @@ export async function POST(
       reviewed_at: new Date().toISOString(),
       approved_company_id: approvedCompanyId ?? null,
     });
+
+    try {
+      await sendEmail({
+        to: application.email,
+        subject: "Your supplier application is approved",
+        html: `
+          <h2>Application Approved</h2>
+          <p>Hello ${application.contact_name},</p>
+          <p>Your supplier application for <strong>${application.company_name}</strong> has been approved.</p>
+          <p>Our team will contact you for the next onboarding steps.</p>
+        `,
+      });
+    } catch (error) {
+      console.error("Supplier approval email failed", error);
+    }
 
     return NextResponse.redirect(new URL("/admin/suppliers", request.url));
   } catch {
