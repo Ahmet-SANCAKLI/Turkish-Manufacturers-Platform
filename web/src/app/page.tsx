@@ -1,65 +1,146 @@
-import Image from "next/image";
+import Link from "next/link";
+import type { Metadata } from "next";
+import { fetchFromSupabase } from "@/lib/supabase-rest";
 
-export default function Home() {
+type Category = {
+  id: string;
+  name: string;
+  slug: string;
+};
+
+type Company = {
+  id: string;
+  name: string;
+  slug: string;
+  city: string | null;
+  country: string | null;
+  verified: boolean;
+};
+
+type Product = {
+  id: string;
+  name: string;
+  slug: string;
+  moq: number | null;
+};
+
+export const metadata: Metadata = {
+  title: "Turkey Manufacturers Platform | Turkish Suppliers",
+  description:
+    "Discover Turkish manufacturers, explore products, and submit RFQs in one B2B sourcing platform.",
+};
+
+export default async function Home() {
+  const [categories, companies, products] = await Promise.all([
+    fetchFromSupabase<Category[]>("categories?select=id,name,slug&order=name.asc"),
+    fetchFromSupabase<Company[]>(
+      "companies?select=id,name,slug,city,country,verified&order=created_at.desc&limit=6",
+    ),
+    fetchFromSupabase<Product[]>(
+      "products?select=id,name,slug,moq&order=created_at.desc&limit=6",
+    ),
+  ]);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <main className="min-h-screen bg-zinc-50 text-zinc-900">
+      <div className="mx-auto max-w-5xl px-6 py-12">
+        <h1 className="text-3xl font-bold">Turkey Manufacturers Platform</h1>
+        <p className="mt-2 text-zinc-600">
+          Turkish manufacturers and products for global buyers.
+        </p>
+        <div className="mt-4">
+          <div className="flex flex-wrap gap-2">
+            <Link
+              href="/rfq"
+              className="inline-flex rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              Request a Quotation
+            </Link>
+            <Link
+              href="/admin/rfqs"
+              className="inline-flex rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-900 ring-1 ring-zinc-300 hover:bg-zinc-100"
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              Open Admin RFQs
+            </Link>
+            <Link
+              href="/supplier/apply"
+              className="inline-flex rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-900 ring-1 ring-zinc-300 hover:bg-zinc-100"
+            >
+              Supplier Apply
+            </Link>
+            <Link
+              href="/admin/suppliers"
+              className="inline-flex rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-900 ring-1 ring-zinc-300 hover:bg-zinc-100"
+            >
+              Open Admin Suppliers
+            </Link>
+            <Link
+              href="/suppliers"
+              className="inline-flex rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-900 ring-1 ring-zinc-300 hover:bg-zinc-100"
+            >
+              Browse Suppliers
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Categories</h2>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {categories.map((category) => (
+              <span
+                key={category.id}
+                className="rounded-full bg-white px-3 py-1 text-sm ring-1 ring-zinc-200"
+              >
+                {category.name}
+              </span>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Featured Companies</h2>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {companies.map((company) => (
+              <article key={company.id} className="rounded-xl bg-white p-4 ring-1 ring-zinc-200">
+                <h3 className="font-semibold">{company.name}</h3>
+                <p className="mt-1 text-sm text-zinc-600">
+                  {company.city}, {company.country}
+                </p>
+                <p className="mt-2 text-xs text-zinc-500">
+                  {company.verified ? "Verified Supplier" : "Pending Verification"}
+                </p>
+                <Link
+                  href={`/suppliers/${company.slug}`}
+                  className="mt-3 inline-block text-sm font-medium underline"
+                >
+                  View Supplier
+                </Link>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Latest Products</h2>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {products.map((product) => (
+              <article key={product.id} className="rounded-xl bg-white p-4 ring-1 ring-zinc-200">
+                <h3 className="font-semibold">{product.name}</h3>
+                <p className="mt-1 text-sm text-zinc-600">Slug: {product.slug}</p>
+                <p className="mt-2 text-xs text-zinc-500">
+                  MOQ: {product.moq ?? "-"}
+                </p>
+                <Link
+                  href={`/products/${product.slug}`}
+                  className="mt-3 inline-block text-sm font-medium underline"
+                >
+                  View Product
+                </Link>
+              </article>
+            ))}
+          </div>
+        </section>
+      </div>
+    </main>
   );
 }
