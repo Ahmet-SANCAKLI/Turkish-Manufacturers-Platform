@@ -46,7 +46,7 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-zinc-50 text-zinc-900">
-      <div className="mx-auto max-w-5xl px-6 py-12">
+      <div className="mx-auto w-full max-w-[1280px] px-4 py-10 sm:px-6 lg:px-8 xl:px-10">
         <div className="mb-4 flex items-center justify-between">
           <details className="relative">
             <summary className="cursor-pointer list-none rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-900 ring-1 ring-zinc-300 hover:bg-zinc-100">
@@ -172,7 +172,7 @@ export default async function Home() {
 
         <section className="mt-10">
           <h2 className="text-xl font-semibold">Featured Companies</h2>
-          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {featuredCompanies.map((company) => (
               <article key={company.id} className="rounded-xl bg-white p-4 ring-1 ring-zinc-200">
                 <h3 className="font-semibold">{company.name}</h3>
@@ -195,7 +195,7 @@ export default async function Home() {
 
         <section className="mt-10">
           <h2 className="text-xl font-semibold">Latest Products</h2>
-          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {latestProducts.map((product) => (
               <article key={product.id} className="rounded-xl bg-white p-4 ring-1 ring-zinc-200">
                 <h3 className="font-semibold">{product.name}</h3>
